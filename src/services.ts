@@ -1,10 +1,9 @@
-import db from "./firebase"
-import twilio from "twilio"
-import axios from "axios"
-import { MessageInstance } from "twilio/lib/rest/api/v2010/account/message"
-import { Request, Response } from "express"
-require("dotenv").config()
 import { GoogleGenerativeAI } from "@google/generative-ai"
+import { Request, Response } from "express"
+import twilio from "twilio"
+import { MessageInstance } from "twilio/lib/rest/api/v2010/account/message"
+import db from "./firebase"
+require("dotenv").config()
 
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
@@ -45,12 +44,11 @@ const generatePostCaptions = async (req: Request, res: Response) => {
   const { socialNetwork, subject, tone } = req.body
   // Use Gemini AI API
   try {
-    const prompt = `Generate 5 social media captions for ${socialNetwork} about ${subject} with a ${tone} tone. Each caption includes some hashtags. Unorder list of captions. Captions are separated by 2 lines.`
+    const prompt = `Generate 5 social media captions for ${socialNetwork} about ${subject} with a ${tone} tone. Each caption includes some hashtags. Each caption is wrapped in ''' pairs.`
     const result = await model.generateContent(prompt)
     const response = result.response
     const text = response.text()
-    const captions = text
-      .split("\n\n")
+    const captions = extractStrings(text)
       .filter((caption) => caption)
       .map((cap) => cap.trim())
 
@@ -65,14 +63,13 @@ const getPostIdeas = async (req: Request, res: Response) => {
   const { topic } = req.body
   // Use Gemini AI API
   try {
-    const prompt = `Generate 10 post ideas about ${topic}. Unorder list of ideas. Ideas are separated by 2 lines.`
+    const prompt = `Generate 10 post ideas about ${topic}. Each ideas is wrapped in ''' pairs.`
 
     const result = await model.generateContent(prompt)
     const response = result.response
     const text = response.text()
 
-    const postIdeas = text
-      .split("\n\n")
+    const postIdeas = extractStrings(text)
       .filter((idea: string) => idea)
       .map((idea: string) => idea.trim())
 
@@ -87,14 +84,13 @@ const createCaptionsFromIdeas = async (req: Request, res: Response) => {
   const { idea } = req.body
   // Use Gemini AI API
   try {
-    const prompt = `Generate 5 captions for the post idea: ${idea}. Each caption includes some hashtags. Unorder list of captions. Captions are separated by 2 lines.`
+    const prompt = `Generate 5 captions for the post idea: ${idea}. Each caption includes some hashtags. Each caption is wrapped in ''' pairs. .`
 
     const result = await model.generateContent(prompt)
     const response = result.response
     const text = response.text()
 
-    const captions = text
-      .split("\n\n")
+    const captions = extractStrings(text)
       .filter((caption: string) => caption)
       .map((cap) => cap.trim())
 
@@ -106,10 +102,10 @@ const createCaptionsFromIdeas = async (req: Request, res: Response) => {
 }
 
 const saveGeneratedContent = async (req: Request, res: Response) => {
-  const { phoneNumber, contentType, content } = req.body
+  const { phoneNumber, topic, data } = req.body
   try {
-    await db.collection("contents").add({ phoneNumber, contentType, content, timestamp: new Date() })
-    res.status(200).send({ success: true })
+    const doc = await db.collection("contents").add({ phoneNumber, topic, data, timestamp: new Date() })
+    res.status(200).send({ success: true, captionId: doc.id })
   } catch (error) {
     console.error(error)
     res.status(500).send({ error: "Error saving content" })
@@ -147,13 +143,25 @@ const unsaveContent = async (req: Request, res: Response) => {
   }
 }
 
+const extractStrings = (text: string): string[] => {
+  const regex = /'''(.*?)'''/g
+  const matches: string[] = []
+  let match
+
+  while ((match = regex.exec(text)) !== null) {
+    matches.push(match[1])
+  }
+
+  return matches
+}
+
 export {
+  createCaptionsFromIdeas,
   createNewAccessCode,
-  validateAccessCode,
   generatePostCaptions,
   getPostIdeas,
-  createCaptionsFromIdeas,
-  saveGeneratedContent,
   getUserGeneratedContents,
+  saveGeneratedContent,
   unsaveContent,
+  validateAccessCode,
 }
