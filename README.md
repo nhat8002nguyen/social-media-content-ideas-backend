@@ -8,3 +8,6 @@
 5. Create a Firebase project, and get a service account key by going to Project settings -> Service accounts tab, then generating a new private key. Save the key under the name `serviceAccountKey.json` into the project root.
 6. Run the program using the command `yarn dev`. The terminal should display a `Server is running on port 9000` message.
 7. Start set up and run the front end. 
+
+### Testing
+- Import file social-media-content-ideas.postman_collection.json to Postman. 
