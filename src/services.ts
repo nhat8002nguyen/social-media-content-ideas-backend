@@ -63,7 +63,7 @@ const getPostIdeas = async (req: Request, res: Response) => {
   const { topic } = req.body
   // Use Gemini AI API
   try {
-    const prompt = `Generate 10 post ideas about ${topic}. Each ideas is wrapped in ''' pairs.`
+    const prompt = `Generate 10 social post ideas about ${topic}. Each idea is wrapped in ''' pairs.`
 
     const result = await model.generateContent(prompt)
     const response = result.response
