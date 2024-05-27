@@ -1,13 +1,13 @@
-import express from "express"
 import bodyParser from "body-parser"
-import routes from "./routes"
 import cors from "cors"
+import express from "express"
+import routes from "./routes"
 
 const app = express()
 require("dotenv").config()
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.ALLOWED_ORIGIN,
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 }
