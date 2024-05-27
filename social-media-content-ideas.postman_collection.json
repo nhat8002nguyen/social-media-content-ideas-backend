@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "a2d52b93-7946-4da4-8af0-81139875460f",
+		"name": "social-media-content-ideas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15695739"
+	},
+	"item": [
+		{
+			"name": "create new access code",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phoneNumber\": \"+84971098441\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/create-new-access-code",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"create-new-access-code"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validate access code",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phoneNumber\": \"+84971098441\",\n    \"accessCode\": \"618663\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/validate-access-code",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"validate-access-code"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generate-post-captions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"socialNetwork\": \"Facebook\",\n    \"subject\": \"Skipli is lauching SkipliAI\",\n    \"tone\": \"Luxury\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/generate-post-captions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"generate-post-captions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-post-ideas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"topic\": \"live a better life\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/get-post-ideas",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"get-post-ideas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-captions-from-ideas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"idea\": \"SkipliAI: Supercharge Your [Specific Task or Problem] with AI**\\n* **Description:**  Focus on a specific problem SkipliAI solves and how it helps users.\\n* **Image:** A screenshot of SkipliAI in action, demonstrating its capabilities.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/create-captions-from-ideas",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"create-captions-from-ideas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save-generated-content",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phoneNumber\": \"+84971098441\",\n    \"topic\": \"SkipliAI: Supercharge Your [Specific Task or Problem] with AI**\\n* **Description:**  Focus on a specific problem SkipliAI solves and how it helps users.\\n* **Image:** A screenshot of SkipliAI in action, demonstrating its capabilities.\",\n    \"data\": \"**Caption 5:** \\nDon't just [task or problem], dominate it! 👑 SkipliAI gives you the edge with its AI-driven insights and automation. 🧠  Experience the power in our screenshot. #SkipliAI #AI #Dominate #Efficiency #GameChanger\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/save-generated-content",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"save-generated-content"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-user-generated-contents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/get-user-generated-contents/+84971098441",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"get-user-generated-contents",
+						"+84971098441"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unsave-content",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"captionId\": \"fzpkCk5fYv9kDapMDyhN\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/unsave-content",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"unsave-content"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
