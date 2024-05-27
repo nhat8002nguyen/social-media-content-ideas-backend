@@ -1,7 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { Request, Response } from "express"
 import twilio from "twilio"
-import { MessageInstance } from "twilio/lib/rest/api/v2010/account/message"
 import db from "./firebase"
 require("dotenv").config()
 
@@ -14,15 +13,16 @@ const createNewAccessCode = async (req: Request, res: Response) => {
   const accessCode = Math.floor(100000 + Math.random() * 900000).toString()
 
   await db.collection("users").doc(phoneNumber).set({ accessCode, phoneNumber })
-
-  client.messages
-    .create({
+  try {
+    const message = await client.messages.create({
       body: `Your access code is ${accessCode}`,
       from: process.env.TWILIO_PHONE_NUMBER,
       to: phoneNumber,
     })
-    .then((message: MessageInstance) => console.log(message.sid))
-    .catch((error) => console.error(error))
+    console.info(message)
+  } catch (err) {
+    console.error(err)
+  }
 
   res.status(200).send({ message: "Sucessfully created an access code." })
 }
