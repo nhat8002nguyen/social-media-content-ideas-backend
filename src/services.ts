@@ -44,7 +44,7 @@ const generatePostCaptions = async (req: Request, res: Response) => {
   const { socialNetwork, subject, tone } = req.body
   // Use Gemini AI API
   try {
-    const prompt = `Generate 5 social media captions for ${socialNetwork} about ${subject} with a ${tone} tone. Each caption includes some hashtags. Each caption is wrapped in ** pairs.`
+    const prompt = `Generate 5 social media captions for ${socialNetwork} about ${subject} with a ${tone} tone. Each caption includes some hashtags. Each caption is wrapped in *** pairs.`
     const result = await model.generateContent(prompt)
     const response = result.response
     const text = response.text()
@@ -63,7 +63,7 @@ const getPostIdeas = async (req: Request, res: Response) => {
   const { topic } = req.body
   // Use Gemini AI API
   try {
-    const prompt = `Generate 10 social post ideas about ${topic}. Each idea should be short less than 150 words. Each idea is wrapped in ** pairs.`
+    const prompt = `Generate 10 social post ideas about ${topic}. Each idea should be short less than 150 words. Each idea is wrapped in *** pairs.`
 
     const result = await model.generateContent(prompt)
     const response = result.response
@@ -84,7 +84,7 @@ const createCaptionsFromIdeas = async (req: Request, res: Response) => {
   const { idea } = req.body
   // Use Gemini AI API
   try {
-    const prompt = `Generate 5 captions for the post idea: ${idea}. Each caption includes some hashtags. Each caption is wrapped in ** pairs.`
+    const prompt = `Generate 5 captions for the post idea: ${idea}. Each caption includes some hashtags. Each caption is wrapped in *** pairs.`
 
     const result = await model.generateContent(prompt)
     const response = result.response
@@ -144,12 +144,12 @@ const unsaveContent = async (req: Request, res: Response) => {
 }
 
 const extractStrings = (text: string): string[] => {
-  const regex = /\*\*(.*?)\*\*/g
+  const regex = /\*\*\*\n?(.*?)\n?\*\*\*/g
   const matches: string[] = []
   let match
 
   while ((match = regex.exec(text)) !== null) {
-    matches.push(match[1])
+    matches.push(match[1].trim().replace(/\*/g, ""))
   }
 
   return matches
